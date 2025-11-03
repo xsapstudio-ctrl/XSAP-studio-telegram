@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XSAP — שאלון התאמה</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --xsap-primary: #a43a2f;
+      --xsap-primary-700: #8e2f25;
+      --xsap-on-primary: #ffffff;
+      --bg: #ffffff;
+      --surface: #f8f8f8;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --focus: #a43a2f44;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow-1: 0 10px 25px rgba(0,0,0,.08);
+      --shadow-2: 0 20px 50px rgba(164,58,47,.25);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f10;
+        --surface: #151517;
+        --text: #f3f4f6;
+        --muted: #9aa0a6;
+        --shadow-1: 0 10px 25px rgba(0,0,0,.5);
+        --shadow-2: 0 20px 50px rgba(0,0,0,.6);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI",-apple-system,"Rubik","Heebo","Alef",Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(164,58,47,.08), transparent 60%),
+                  radial-gradient(900px 500px at 0% 120%, rgba(164,58,47,.08), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .container { max-width: 880px; margin: min(6vh,60px) auto; padding: clamp(16px, 3vw, 32px); }
+    .branding { display:flex; align-items:center; gap:20px; margin-bottom:28px; }
+    .logo { width: clamp(120px, 22vw, 220px); height:auto; filter: drop-shadow(0 8px 24px rgba(164,58,47,.25)); }
+    .title-wrap h1 { margin:0 0 6px 0; font-weight:900; letter-spacing:.5px; font-size: clamp(24px, 4.5vw, 36px); color: var(--xsap-primary); }
+    .title-wrap p { margin:0; color:var(--muted); font-size: clamp(14px, 2.5vw, 16px); }
+    form {
+      background: linear-gradient(180deg, var(--surface), transparent 900px);
+      border: 1px solid rgba(164,58,47,.14);
+      border-radius: var(--radius);
+      padding: clamp(18px, 3.2vw, 28px);
+      box-shadow: var(--shadow-1);
+      backdrop-filter: saturate(110%) blur(2px);
+    }
+    .grid { display:grid; gap:18px; }
+    @media (min-width: 800px) { .grid.two { grid-template-columns:1fr 1fr; } }
+    fieldset { border:none; margin:0; padding:0; }
+    .field { display:grid; gap:10px; background: rgba(255,255,255,.7); border:1px solid rgba(164,58,47,.14); border-radius: var(--radius-sm); padding:14px; }
+    @media (prefers-color-scheme: dark) { .field { background: rgba(255,255,255,.03); } }
+    label.legend { font-weight:700; color: var(--xsap-primary); letter-spacing:.3px; }
+    input[type="text"], input[type="number"], textarea {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid rgba(164,58,47,.25); background: var(--bg); color:var(--text);
+      outline:none; transition: box-shadow .2s, border-color .2s, transform .06s;
+    }
+    input:focus, textarea:focus { border-color: var(--xsap-primary); box-shadow: 0 0 0 6px var(--focus); }
+    textarea { min-height: 120px; resize: vertical; }
+    .options { display:grid; gap:10px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .chip {
+      display:grid; grid-template-columns:20px 1fr; align-items:center; gap:8px;
+      background: linear-gradient(180deg, rgba(164,58,47,.08), rgba(164,58,47,.04));
+      border:1px solid rgba(164,58,47,.2); border-radius:999px; padding:10px 14px; cursor:pointer;
+      transition: transform .06s ease, box-shadow .2s ease;
+    }
+    .chip:hover { box-shadow: var(--shadow-1); transform: translateY(-1px); }
+    .chip input { accent-color: var(--xsap-primary); }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-start; margin-top:10px; }
+    .btn { appearance:none; border:none; border-radius:12px; padding:14px 18px; font-weight:800; letter-spacing:.4px; cursor:pointer; transition: transform .06s, box-shadow .2s, background .2s; }
+    .btn.primary { background: linear-gradient(180deg, var(--xsap-primary), var(--xsap-primary-700)); color: var(--xsap-on-primary); box-shadow: var(--shadow-2); }
+    .btn.secondary { background: transparent; color: var(--xsap-primary); border:2px solid var(--xsap-primary); }
+    .helper { font-size:13px; color:var(--muted); margin-top:2px; }
+    .success { display:none; padding:14px; border-radius:12px; background: rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:var(--text); margin-top:12px; }
+    .success.show { display:block; }
+    .error { display:none; padding:14px; border-radius:12px; background: rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:var(--text); margin-top:12px; }
+    .error.show { display:block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="branding">
+      <img class="logo" src="./assets/logo.jpeg" alt="XSAP Logo" />
+      <div class="title-wrap">
+        <h1>ברוך/ה הבא/ה ל-XSAP</h1>
+        <p>מלא/י את השאלון והפרטים יישלחו לטלגרם של הסטודיו 📲</p>
+      </div>
+    </div>
+
+    <form id="xsapForm" novalidate>
+      <div class="grid">
+        <fieldset class="field">
+          <label class="legend">👤 שם *</label>
+          <input type="text" name="name" placeholder="שם פרטי ומשפחה" required />
+          <div class="helper">שדות עם * הם שדות חובה</div>
+        </fieldset>
+
+        <div class="grid two">
+          <fieldset class="field">
+            <label class="legend">🎂 גיל *</label>
+            <input type="number" name="age" min="6" max="100" inputmode="numeric" placeholder="לדוגמה: 28" required />
+          </fieldset>
+
+          <fieldset class="field">
+            <label class="legend">📍 מאיפה את/ה *</label>
+            <input type="text" name="location" placeholder="עיר / שכונה" required />
+          </fieldset>
+        </div>
+
+        <fieldset class="field">
+          <label class="legend">🏋️‍♀️ ניסיון קודם באימונים *</label>
+          <div class="options">
+            <label class="chip"><input type="radio" name="experience" value="אין ניסיון" required />אין ניסיון</label>
+            <label class="chip"><input type="radio" name="experience" value="מעט ניסיון" />מעט ניסיון</label>
+            <label class="chip"><input type="radio" name="experience" value="מתאמנ/ת קבוע" />מתאמנ/ת קבוע/ה</label>
+            <label class="chip"><input type="radio" name="experience" value="התאמנ/תי בעבר" />התאמנ/תי בעבר</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <label class="legend">💬 כמה מילים עליך</label>
+          <textarea name="about" placeholder="עבודה, סגנון חיים, הריון, פציעות אם יש…"></textarea>
+        </fieldset>
+
+        <fieldset class="field">
+          <label class="legend">✨ איך הגעת אלינו? *</label>
+          <div class="options">
+            <label class="chip"><input type="radio" name="source" value="המלצה" required />המלצה</label>
+            <label class="chip"><input type="radio" name="source" value="אינסטגרם" />אינסטגרם</label>
+            <label class="chip"><input type="radio" name="source" value="איזי" />איזי</label>
+            <label class="chip"><input type="radio" name="source" value="גוגל" />גוגל</label>
+          </div>
+          <div style="margin-top:10px;">
+            <input type="text" name="source_other" placeholder="אחר (נא לפרט)" />
+          </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <label class="legend">🔥 מתי נוח לך להגיע לאימונים? *</label>
+          <div class="options">
+            <label class="chip"><input type="radio" name="time" value="בוקר" required />בוקר</label>
+            <label class="chip"><input type="radio" name="time" value="ערב" />ערב</label>
+            <label class="chip"><input type="radio" name="time" value="תלוי בשבוע" />תלוי בשבוע</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">שליחה</button>
+        <button class="btn secondary" type="reset">ניקוי הטופס</button>
+      </div>
+
+      <div id="okMsg" class="success">תודה! ההודעה נשלחה לטלגרם ✅</div>
+      <div id="errMsg" class="error">אופס… לא הצלחנו לשלוח. נסו שוב או פנו אלינו.</div>
+    </form>
+
+    <div class="helper" style="text-align:center; margin-top:16px;">XSAP • Fitness of New Generation</div>
+  </div>
+
+  <script>
+    const form = document.getElementById('xsapForm');
+    const ok = document.getElementById('okMsg');
+    const err = document.getElementById('errMsg');
+
+    function buildSummary(data) {
+      const lines = [
+        "📝 שאלון XSAP — תשובות:",
+        `👤 שם: ${data.get('name') || ''}`,
+        `🎂 גיל: ${data.get('age') || ''}`,
+        `📍 מאיפה: ${data.get('location') || ''}`,
+        `🏋️‍♀️ ניסיון: ${data.get('experience') || ''}`,
+        `💬 עליך: ${(data.get('about') || '').trim() || '—'}`,
+        `✨ מקור הגעה: ${data.get('source') || (data.get('source_other') ? 'אחר' : '')}`,
+        `🔥 זמן נוח: ${data.get('time') || ''}`,
+      ];
+      return lines.join('\n');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.classList.remove('show'); err.classList.remove('show');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const data = new FormData(form);
+      const summary = buildSummary(data);
+      try {
+        const res = await fetch('/api/send-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: summary })
+        });
+        if (!res.ok) throw new Error('failed');
+        ok.classList.add('show'); form.reset();
+      } catch(e) {
+        err.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
