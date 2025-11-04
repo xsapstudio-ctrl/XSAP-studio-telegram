@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XSAP • שאלון הצטרפות</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#a43a2f" />
+  <style>
+    :root{
+      --brand:#a43a2f; --brand-2:#8e2f25;
+      --bg:#0f0f10; --panel:#141416; --text:#f3f4f6; --muted:#9aa0a6;
+      --stroke:rgba(164,58,47,.28); --stroke-soft:rgba(164,58,47,.18);
+      --ok:rgba(34,197,94,.12); --ok-b:rgba(34,197,94,.36);
+      --err:rgba(239,68,68,.12); --err-b:rgba(239,68,68,.40);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font-family:"Heebo",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+      direction:rtl;text-align:right;
+    }
+    .wrap{max-width:880px;margin:32px auto;padding:16px}
+    header{text-align:center;margin-bottom:24px}
+    header .logoBox{height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+    header img{height:100%;width:auto;max-width:80vw;filter:drop-shadow(0 4px 18px rgba(0,0,0,.55))}
+    h1{margin:0;color:var(--brand);font-weight:800;letter-spacing:.3px;font-size:1.8rem}
+
+    form{
+      background:var(--panel);border:1px solid var(--stroke-soft);
+      border-radius:16px;padding:22px;box-shadow:0 10px 34px rgba(0,0,0,.28)
+    }
+    .section{margin:18px 0 8px;font-weight:800;color:var(--text)}
+    .grid{display:grid;gap:14px}
+    @media(min-width:820px){.two{grid-template-columns:1fr 1fr}}
+
+    .field{display:grid;gap:8px}
+    .label{font-weight:600}
+    input[type="text"],input[type="number"],textarea{
+      width:100%;padding:12px 14px;border-radius:12px;outline:none;
+      border:1px solid var(--stroke);background:var(--bg);color:var(--text);
+      transition:border-color .15s, box-shadow .15s;
+    }
+    input::placeholder,textarea::placeholder{color:var(--muted)}
+    input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(164,58,47,.18)}
+    textarea{min-height:120px;resize:vertical}
+
+    .chips{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{
+      display:flex;align-items:center;gap:8px;line-height:1;
+      border:1px solid var(--stroke);padding:10px 14px;border-radius:999px;
+      background:linear-gradient(180deg,rgba(164,58,47,.08),rgba(164,58,47,.04));
+      cursor:pointer;user-select:none;
+      transition:transform .05s, border-color .15s, background .15s;
+    }
+    .chip:active{transform:translateY(1px)}
+    .chip input[type="radio"]{margin:0 0 0 6px;accent-color:var(--brand)}
+    .chip.checked{border-color:var(--brand);background:linear-gradient(180deg,rgba(164,58,47,.16),rgba(164,58,47,.08))}
+
+    .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+    button{border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer}
+    .primary{background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#fff}
+    .secondary{background:transparent;border:2px solid var(--brand);color:var(--brand)}
+
+    .ok,.err{margin-top:12px;padding:12px;border-radius:12px;display:none}
+    .ok{background:var(--ok);border:1px solid var(--ok-b)}
+    .err{background:var(--err);border:1px solid var(--err-b)}
+    .show{display:block}
+
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
+    footer .legal{margin-top:6px;color:#8a8f95;font-size:.85rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logoBox">
+        <!-- קודם קובץ סטטי; אם אין — נייצר לוגו וקטורי חלופי -->
+        <img id="xsapLogo" alt="XSAP logo" src="/logo.jpeg" />
+      </div>
+      <h1>ברוכים הבאים ל-XSAP</h1>
+    </header>
+
+    <form id="xsapForm" novalidate>
+      <div class="section">היי 💜<br>כדי שאוכל להתאים לך את החוויה הכי טובה באימון, תוכל/י למלא כמה פרטים קצרים?</div>
+
+      <div class="grid two">
+        <div class="field">
+          <div class="label">👤 שם *</div>
+          <input name="name" type="text" placeholder="שם מלא" required />
+        </div>
+        <div class="field">
+          <div class="label">🎂 גיל *</div>
+          <input name="age" type="number" min="6" max="100" placeholder="לדוגמה: 28" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">📍 מאיפה את/ה *</div>
+        <input name="location" type="text" placeholder="עיר / שכונה" required />
+      </div>
+
+      <div class="section">🏋️‍♀️ ניסיון קודם באימונים *</div>
+      <div class="chips" data-name="experience">
+        <label class="chip"><input type="radio" name="experience" value="1️⃣ אין ניסיון" required>1️⃣ אין ניסיון</label>
+        <label class="chip"><input type="radio" name="experience" value="2️⃣ מעט ניסיון">2️⃣ מעט ניסיון</label>
+        <label class="chip"><input type="radio" name="experience" value="3️⃣ מתאמנ/ת קבוע">3️⃣ מתאמנ/ת קבוע</label>
+        <label class="chip"><input type="radio" name="experience" value="4️⃣ התאמנ/תי בעבר">4️⃣ התאמנ/תי בעבר</label>
+      </div>
+
+      <div class="section">💬 כמה מילים עליך</div>
+      <div class="field">
+        <div class="label">(עבודה, סגנון חיים, הריון, פציעות אם יש)</div>
+        <textarea name="about" placeholder="✏️ תשובה חופשית…"></textarea>
+      </div>
+
+      <div class="section">✨ איך הגעת אלינו? *</div>
+      <div class="chips" data-name="source">
+        <label class="chip"><input type="radio" name="source" value="1️⃣ המלצה" required>1️⃣ המלצה</label>
+        <label class="chip"><input type="radio" name="source" value="2️⃣ אינסטגרם">2️⃣ אינסטגרם</label>
+        <label class="chip"><input type="radio" name="source" value="3️⃣ איזי">3️⃣ איזי</label>
+        <label class="chip"><input type="radio" name="source" value="4️⃣ גוגל">4️⃣ גוגל</label>
+      </div>
+      <div class="field">
+        <input name="source_other" type="text" placeholder="5️⃣ אחר: כתוב/כתבי כאן (אופציונלי)" />
+      </div>
+
+      <div class="section">🔥 מתי נוח לך להגיע לאימונים? *</div>
+      <div class="chips" data-name="time">
+        <label class="chip"><input type="radio" name="time" value="1️⃣ בוקר" required>1️⃣ בוקר</label>
+        <label class="chip"><input type="radio" name="time" value="2️⃣ ערב">2️⃣ ערב</label>
+        <label class="chip"><input type="radio" name="time" value="3️⃣ תלוי בשבוע">3️⃣ תלוי בשבוע</label>
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit">שליחה</button>
+        <button class="secondary" type="reset">ניקוי</button>
+      </div>
+
+      <div id="okMsg" class="ok">✅ נשלח! ההודעה הגיעה לטלגרם.</div>
+      <div id="errMsg" class="err">❌ אופס… השליחה נכשלה. נסו שוב או פנו אלינו.</div>
+    </form>
+
+    <footer>
+      XSAP • Fitness of New Generation
+      <div class="legal">All rights reserved © Idan Brown Entrepreneurship</div>
+    </footer>
+  </div>
+
+  <script>
+    // --- לוגו: מנסה /logo.jpeg, אם לא קיים מנסה /logo.png, ואם גם זה נופל — יוצר לוגו וקטורי חלופי
+    (function loadLogo(){
+      const img = document.getElementById('xsapLogo');
+      let triedPng = false;
+      img.onerror = () => {
+        if (!triedPng && img.src.endsWith('/logo.jpeg')) {
+          triedPng = true;
+          img.src = '/logo.png';
+        } else {
+          // fallback: ציור וקטורי דמוי לוגו בצבע המותג
+          const svg = encodeURIComponent(`
+            <svg xmlns='http://www.w3.org/2000/svg' width='720' height='240' viewBox='0 0 720 240'>
+              <rect width='100%' height='100%' fill='none'/>
+              <g fill='#a43a2f' font-family='Heebo, Arial, sans-serif'>
+                <text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle'
+                      font-size='120' font-weight='800'>XSAP</text>
+                <text x='50%' y='78%' dominant-baseline='middle' text-anchor='middle'
+                      font-size='28' font-weight='800' opacity='.9'>FITNESS OF NEW GENERATION</text>
+              </g>
+            </svg>`);
+          img.src = `data:image/svg+xml;charset=utf-8,${svg}`;
+        }
+      };
+    })();
+
+    // --- הדגשת בחירה בצ'יפים ---
+    document.querySelectorAll('.chips').forEach(group=>{
+      group.addEventListener('change', e=>{
+        if(e.target.type==='radio'){
+          group.querySelectorAll('.chip').forEach(c=>c.classList.remove('checked'));
+          e.target.closest('.chip')?.classList.add('checked');
+        }
+      });
+    });
+
+    const form = document.getElementById('xsapForm');
+    const okMsg = document.getElementById('okMsg');
+    const errMsg = document.getElementById('errMsg');
+    const radioVal = name => (document.querySelector(`input[name="${name}"]:checked`)?.value || '');
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      okMsg.classList.remove('show'); errMsg.classList.remove('show');
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+
+      const payload = {
+        name: form.name.value.trim(),
+        age: form.age.value.trim(),
+        location: form.location.value.trim(),
+        experience: radioVal('experience'),
+        about: form.about.value.trim(),
+        source: radioVal('source'),
+        source_other: form.source_other.value.trim(),
+        time: radioVal('time')
+      };
+
+      // הודעה – עם ירידות שורה אמיתיות
+      payload.text = [
+        'היי 💜',
+        'כדי שאוכל להתאים לך את החוויה הכי טובה באימון, תוכל/י למלא כמה פרטים קצרים?',
+        '',
+        '👇',
+        `👤 שם: ${payload.name}`,
+        `🎂 גיל: ${payload.age}`,
+        `📍 מאיפה את/ה: ${payload.location}`,
+        '',
+        '🏋️‍♀️ ניסיון קודם באימונים:',
+        `${payload.experience || '—'}`,
+        '',
+        '💬 כמה מילים עליך:',
+        '(עבודה, סגנון חיים, הריון, פציעות אם יש)',
+        `✏️ תשובה חופשית: ${payload.about || '—'}`,
+        '',
+        '✨ איך הגעת אלינו?',
+        `${payload.source || (payload.source_other ? '5️⃣ אחר' : '—')}${payload.source_other ? ' — ' + payload.source_other : ''}`,
+        '',
+        '🔥 מתי נוח לך להגיע לאימונים?',
+        `${payload.time || '—'}`
+      ].join('\n');
+
+      try{
+        const res = await fetch('/api/send-telegram', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if(!res.ok) throw new Error('send failed');
+        okMsg.classList.add('show');
+        form.reset();
+        document.querySelectorAll('.chip.checked').forEach(c=>c.classList.remove('checked'));
+      }catch(err){
+        console.error('Send error:', err);
+        errMsg.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
