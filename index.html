@@ -1,249 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>XSAP • שאלון הצטרפות</title>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#a43a2f" />
-  <style>
-    :root{
-      --brand:#a43a2f; --brand-2:#8e2f25;
-      --bg:#0f0f10; --panel:#141416; --text:#f3f4f6; --muted:#9aa0a6;
-      --stroke:rgba(164,58,47,.28); --stroke-soft:rgba(164,58,47,.18);
-      --ok:rgba(34,197,94,.12); --ok-b:rgba(34,197,94,.36);
-      --err:rgba(239,68,68,.12); --err-b:rgba(239,68,68,.40);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family:"Heebo",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-      direction:rtl;text-align:right;
-    }
-    .wrap{max-width:880px;margin:32px auto;padding:16px}
-    header{text-align:center;margin-bottom:24px}
-    header .logoBox{height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
-    header img{height:100%;width:auto;max-width:80vw;filter:drop-shadow(0 4px 18px rgba(0,0,0,.55))}
-    h1{margin:0;color:var(--brand);font-weight:800;letter-spacing:.3px;font-size:1.8rem}
-
-    form{
-      background:var(--panel);border:1px solid var(--stroke-soft);
-      border-radius:16px;padding:22px;box-shadow:0 10px 34px rgba(0,0,0,.28)
-    }
-    .section{margin:18px 0 8px;font-weight:800;color:var(--text)}
-    .grid{display:grid;gap:14px}
-    @media(min-width:820px){.two{grid-template-columns:1fr 1fr}}
-
-    .field{display:grid;gap:8px}
-    .label{font-weight:600}
-    input[type="text"],input[type="number"],textarea{
-      width:100%;padding:12px 14px;border-radius:12px;outline:none;
-      border:1px solid var(--stroke);background:var(--bg);color:var(--text);
-      transition:border-color .15s, box-shadow .15s;
-    }
-    input::placeholder,textarea::placeholder{color:var(--muted)}
-    input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(164,58,47,.18)}
-    textarea{min-height:120px;resize:vertical}
-
-    .chips{display:flex;flex-wrap:wrap;gap:10px}
-    .chip{
-      display:flex;align-items:center;gap:8px;line-height:1;
-      border:1px solid var(--stroke);padding:10px 14px;border-radius:999px;
-      background:linear-gradient(180deg,rgba(164,58,47,.08),rgba(164,58,47,.04));
-      cursor:pointer;user-select:none;
-      transition:transform .05s, border-color .15s, background .15s;
-    }
-    .chip:active{transform:translateY(1px)}
-    .chip input[type="radio"]{margin:0 0 0 6px;accent-color:var(--brand)}
-    .chip.checked{border-color:var(--brand);background:linear-gradient(180deg,rgba(164,58,47,.16),rgba(164,58,47,.08))}
-
-    .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-    button{border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer}
-    .primary{background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#fff}
-    .secondary{background:transparent;border:2px solid var(--brand);color:var(--brand)}
-
-    .ok,.err{margin-top:12px;padding:12px;border-radius:12px;display:none}
-    .ok{background:var(--ok);border:1px solid var(--ok-b)}
-    .err{background:var(--err);border:1px solid var(--err-b)}
-    .show{display:block}
-
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
-    footer .legal{margin-top:6px;color:#8a8f95;font-size:.85rem}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="שאלון היכרות קצר של XSAP Studio — כדי להתאים לך את חוויית האימון הנכונה.">
+  <title>נעים להכיר | XSAP Studio</title>
+  <link rel="icon" type="image/webp" href="/assets/xsap-logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logoBox">
-        <!-- קודם קובץ סטטי; אם אין — נייצר לוגו וקטורי חלופי -->
-        <img id="xsapLogo" alt="XSAP logo" src="/logo.jpeg" />
-      </div>
-      <h1>ברוכים הבאים ל-XSAP</h1>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <main class="shell" id="main">
+    <header class="brand" aria-label="XSAP Studio">
+      <img class="brand-logo" src="/assets/xsap-logo.webp" alt="XSAP Studio — Fitness of New Generation" width="190" height="112">
+      <p class="brand-caption">FITNESS OF NEW GENERATION</p>
     </header>
 
-    <form id="xsapForm" novalidate>
-      <div class="section">היי 💜<br>כדי שאוכל להתאים לך את החוויה הכי טובה באימון, תוכל/י למלא כמה פרטים קצרים?</div>
+    <section class="form-panel" id="form-panel" aria-labelledby="step-title">
+      <div class="panel-top">
+        <div class="top-meta"><span class="eyebrow">XSAP STUDIO / LET'S BEGIN</span><span class="steps-counter"><b id="step-current">01</b> <span class="slash">/</span> 03</span></div>
+        <div class="progress" role="progressbar" aria-label="התקדמות בשאלון" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" id="progress" ><i class="progress-indicator"></i></div>
+      </div>
 
-      <div class="grid two">
-        <div class="field">
-          <div class="label">👤 שם *</div>
-          <input name="name" type="text" placeholder="שם מלא" required />
+      <div class="intro">
+        <span class="intro-tag" id="step-tag">בואו נכיר</span>
+        <h1 id="step-title">הדרך שלך מתחילה כאן<span class="accent-dot">.</span></h1>
+        <p id="step-description">כמה פרטים קטנים, כדי שנכיר אותך ונתאים לך את האימונים שהכי נכונים עבורך.</p>
+      </div>
+
+      <form id="xsap-form" novalidate>
+        <!-- Step 1 -->
+        <div class="form-step active" data-step="0">
+          <div class="field" data-field="fullName">
+            <label for="fullName"><span class="field-number">01</span> מה השם המלא שלך? <span class="required" aria-label="חובה">*</span></label>
+            <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="100" placeholder="השם המלא שלך" required>
+            <p class="field-error" id="err-fullName" aria-live="polite"></p>
+          </div>
+
+          <div class="field compact-field" data-field="age">
+            <label for="age"><span class="field-number">02</span> בת כמה את / בן כמה אתה? <span class="required" aria-label="חובה">*</span></label>
+            <input id="age" name="age" type="number" inputmode="numeric" min="10" max="110" placeholder="הגיל שלך" required>
+            <p class="field-error" id="err-age" aria-live="polite"></p>
+          </div>
+
+          <fieldset class="field" data-field="activity">
+            <legend><span class="field-number">03</span> מה מצב האימונים שלך כיום? <span class="required" aria-label="חובה">*</span></legend>
+            <div class="choices" id="activity-choices" data-choice-for="activity">
+              <label class="choice"><input type="radio" name="activity" value="לא מתאמן/ת כרגע"><span class="choice-text">לא מתאמן/ת כרגע</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="activity" value="מתאמן/ת מדי פעם"><span class="choice-text">מתאמן/ת מדי פעם</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="activity" value="מתאמן/ת באופן קבוע"><span class="choice-text">מתאמן/ת באופן קבוע</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <p class="field-error" id="err-activity" aria-live="polite"></p>
+          </fieldset>
         </div>
-        <div class="field">
-          <div class="label">🎂 גיל *</div>
-          <input name="age" type="number" min="6" max="100" placeholder="לדוגמה: 28" required />
+
+        <!-- Step 2 -->
+        <div class="form-step" data-step="1" hidden>
+          <fieldset class="field" data-field="experience">
+            <legend><span class="field-number">04</span> איזה ניסיון יש לך באימונים? <span class="required" aria-label="חובה">*</span></legend>
+            <p class="field-help">אפשר לבחור יותר מתשובה אחת</p>
+            <div class="choices choices-grid" data-choice-for="experience">
+              <label class="choice"><input type="checkbox" name="experience" value="ללא ניסיון קודם" data-exclusive="true"><span class="choice-text">ללא ניסיון קודם</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="אימוני כוח / חדר כושר"><span class="choice-text">אימוני כוח / חדר כושר</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="אימונים פונקציונליים / HIIT"><span class="choice-text">פונקציונלי / HIIT</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="פילאטיס / יוגה"><span class="choice-text">פילאטיס / יוגה</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="ספינינג / רכיבה"><span class="choice-text">ספינינג / רכיבה</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="ריצה / פעילות אירובית"><span class="choice-text">ריצה / פעילות אירובית</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="experience" value="אחר"><span class="choice-text">אחר</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <div class="conditional" id="experience-other-wrap" hidden><label for="experienceOther">אפשר לפרט בקצרה</label><input id="experienceOther" name="experienceOther" type="text" maxlength="180" placeholder="איזה סוג אימון?"></div>
+            <p class="field-error" id="err-experience" aria-live="polite"></p>
+          </fieldset>
+
+          <fieldset class="field" data-field="medical">
+            <legend><span class="field-number">05</span> האם יש מצב רפואי, הריון, פציעה או מגבלה גופנית שחשוב שנדע עליה? <span class="required" aria-label="חובה">*</span></legend>
+            <div class="choices choices-grid" data-choice-for="medical">
+              <label class="choice"><input type="radio" name="medical" value="לא"><span class="choice-text">לא</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="medical" value="כן"><span class="choice-text">כן</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <div class="conditional" id="medical-details-wrap" hidden>
+              <label for="medicalDetails">מה חשוב שנדע?</label>
+              <textarea name="medicalDetails" id="medicalDetails" rows="3" maxlength="500" placeholder="אפשר לתאר בקצרה רק מה משפיע על האימון"></textarea>
+              <p class="privacy-note">אין צורך לציין אבחנות או פרטים רפואיים רגישים. נוכל לדבר על כך באופן אישי.</p>
+            </div>
+            <p class="field-error" id="err-medical" aria-live="polite"></p>
+          </fieldset>
         </div>
-      </div>
 
-      <div class="field">
-        <div class="label">📍 מאיפה את/ה *</div>
-        <input name="location" type="text" placeholder="עיר / שכונה" required />
-      </div>
+        <!-- Step 3 -->
+        <div class="form-step" data-step="2" hidden>
+          <fieldset class="field" data-field="interests">
+            <legend><span class="field-number">06</span> אילו אימונים מעניינים אותך? <span class="required" aria-label="חובה">*</span></legend>
+            <p class="field-help">אפשר לבחור יותר מתשובה אחת</p>
+            <div class="choices choices-grid" data-choice-for="interests">
+              <label class="choice"><input type="checkbox" name="interests" value="אימוני כוח"><span class="choice-text">אימוני כוח</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="interests" value="ספינינג"><span class="choice-text">ספינינג</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="interests" value="פילאטיס"><span class="choice-text">פילאטיס</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="checkbox" name="interests" value="הכול מהכול! 😍" data-exclusive="true"><span class="choice-text">הכול מהכול! 😍</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <p class="field-error" id="err-interests" aria-live="polite"></p>
+          </fieldset>
+          <fieldset class="field" data-field="times">
+            <legend><span class="field-number">07</span> מתי הכי נוח לך להתאמן? <span class="required" aria-label="חובה">*</span></legend>
+            <div class="choices choices-grid" data-choice-for="times">
+              <label class="choice"><input type="radio" name="times" value="בוקר"><span class="choice-text">בוקר</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="times" value="ערב"><span class="choice-text">ערב</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice span-two"><input type="radio" name="times" value="משתנה משבוע לשבוע"><span class="choice-text">משתנה משבוע לשבוע</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <p class="field-error" id="err-times" aria-live="polite"></p>
+          </fieldset>
+          <fieldset class="field last-field" data-field="source">
+            <legend><span class="field-number">08</span> איך הגעת אלינו? <span class="required" aria-label="חובה">*</span></legend>
+            <div class="choices choices-grid" data-choice-for="source">
+              <label class="choice"><input type="radio" name="source" value="המלצה"><span class="choice-text">המלצה</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="source" value="איזי"><span class="choice-text">איזי</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="source" value="גוגל"><span class="choice-text">גוגל</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice"><input type="radio" name="source" value="אינסטגרם"><span class="choice-text">אינסטגרם</span><span class="choice-mark" aria-hidden="true"></span></label>
+              <label class="choice span-two"><input type="radio" name="source" value="עברתי וראיתי (: "><span class="choice-text">עברתי וראיתי :)</span><span class="choice-mark" aria-hidden="true"></span></label>
+            </div>
+            <p class="field-error" id="err-source" aria-live="polite"></p>
+          </fieldset>
+        </div>
 
-      <div class="section">🏋️‍♀️ ניסיון קודם באימונים *</div>
-      <div class="chips" data-name="experience">
-        <label class="chip"><input type="radio" name="experience" value="1️⃣ אין ניסיון" required>1️⃣ אין ניסיון</label>
-        <label class="chip"><input type="radio" name="experience" value="2️⃣ מעט ניסיון">2️⃣ מעט ניסיון</label>
-        <label class="chip"><input type="radio" name="experience" value="3️⃣ מתאמנ/ת קבוע">3️⃣ מתאמנ/ת קבוע</label>
-        <label class="chip"><input type="radio" name="experience" value="4️⃣ התאמנ/תי בעבר">4️⃣ התאמנ/תי בעבר</label>
-      </div>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;height:1px;width:1px;overflow:hidden"><label for="website">אתר</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <div class="form-actions">
+          <button class="button back-button" type="button" id="back-button" hidden><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> חזרה</button>
+          <button class="button primary-button" type="button" id="next-button">ממשיכים <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="button primary-button" type="submit" id="submit-button" hidden>שולחים את השאלון <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <p id="submit-error" role="alert" hidden></p>
+      </form>
+    </section>
 
-      <div class="section">💬 כמה מילים עליך</div>
-      <div class="field">
-        <div class="label">(עבודה, סגנון חיים, הריון, פציעות אם יש)</div>
-        <textarea name="about" placeholder="✏️ תשובה חופשית…"></textarea>
-      </div>
+    <section class="success-panel" id="success-panel" hidden role="status" aria-live="polite">
+      <div class="success-symbol" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48" fill="none"><path d="m11 24 9 9 17-18" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="success-kicker">איזה כיף שהצטרפת!</p>
+      <h1>קיבלנו את הפרטים שלך<span class="accent-dot">.</span></h1>
+      <p>תודה על הזמן שהקדשת לנו. צוות XSAP יעבור על התשובות ונמשיך משם יחד ❤️</p>
+    </section>
 
-      <div class="section">✨ איך הגעת אלינו? *</div>
-      <div class="chips" data-name="source">
-        <label class="chip"><input type="radio" name="source" value="1️⃣ המלצה" required>1️⃣ המלצה</label>
-        <label class="chip"><input type="radio" name="source" value="2️⃣ אינסטגרם">2️⃣ אינסטגרם</label>
-        <label class="chip"><input type="radio" name="source" value="3️⃣ איזי">3️⃣ איזי</label>
-        <label class="chip"><input type="radio" name="source" value="4️⃣ גוגל">4️⃣ גוגל</label>
-      </div>
-      <div class="field">
-        <input name="source_other" type="text" placeholder="5️⃣ אחר: כתוב/כתבי כאן (אופציונלי)" />
-      </div>
-
-      <div class="section">🔥 מתי נוח לך להגיע לאימונים? *</div>
-      <div class="chips" data-name="time">
-        <label class="chip"><input type="radio" name="time" value="1️⃣ בוקר" required>1️⃣ בוקר</label>
-        <label class="chip"><input type="radio" name="time" value="2️⃣ ערב">2️⃣ ערב</label>
-        <label class="chip"><input type="radio" name="time" value="3️⃣ תלוי בשבוע">3️⃣ תלוי בשבוע</label>
-      </div>
-
-      <div class="actions">
-        <button class="primary" type="submit">שליחה</button>
-        <button class="secondary" type="reset">ניקוי</button>
-      </div>
-
-      <div id="okMsg" class="ok">✅ נשלח! ההודעה הגיעה לטלגרם.</div>
-      <div id="errMsg" class="err">❌ אופס… השליחה נכשלה. נסו שוב או פנו אלינו.</div>
-    </form>
-
-    <footer>
-      XSAP • Fitness of New Generation
-      <div class="legal">All rights reserved © Idan Brown Entrepreneurship</div>
-    </footer>
-  </div>
-
-  <script>
-    // --- לוגו: מנסה /logo.jpeg, אם לא קיים מנסה /logo.png, ואם גם זה נופל — יוצר לוגו וקטורי חלופי
-    (function loadLogo(){
-      const img = document.getElementById('xsapLogo');
-      let triedPng = false;
-      img.onerror = () => {
-        if (!triedPng && img.src.endsWith('/logo.jpeg')) {
-          triedPng = true;
-          img.src = '/logo.png';
-        } else {
-          // fallback: ציור וקטורי דמוי לוגו בצבע המותג
-          const svg = encodeURIComponent(`
-            <svg xmlns='http://www.w3.org/2000/svg' width='720' height='240' viewBox='0 0 720 240'>
-              <rect width='100%' height='100%' fill='none'/>
-              <g fill='#a43a2f' font-family='Heebo, Arial, sans-serif'>
-                <text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle'
-                      font-size='120' font-weight='800'>XSAP</text>
-                <text x='50%' y='78%' dominant-baseline='middle' text-anchor='middle'
-                      font-size='28' font-weight='800' opacity='.9'>FITNESS OF NEW GENERATION</text>
-              </g>
-            </svg>`);
-          img.src = `data:image/svg+xml;charset=utf-8,${svg}`;
-        }
-      };
-    })();
-
-    // --- הדגשת בחירה בצ'יפים ---
-    document.querySelectorAll('.chips').forEach(group=>{
-      group.addEventListener('change', e=>{
-        if(e.target.type==='radio'){
-          group.querySelectorAll('.chip').forEach(c=>c.classList.remove('checked'));
-          e.target.closest('.chip')?.classList.add('checked');
-        }
-      });
-    });
-
-    const form = document.getElementById('xsapForm');
-    const okMsg = document.getElementById('okMsg');
-    const errMsg = document.getElementById('errMsg');
-    const radioVal = name => (document.querySelector(`input[name="${name}"]:checked`)?.value || '');
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      okMsg.classList.remove('show'); errMsg.classList.remove('show');
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-
-      const payload = {
-        name: form.name.value.trim(),
-        age: form.age.value.trim(),
-        location: form.location.value.trim(),
-        experience: radioVal('experience'),
-        about: form.about.value.trim(),
-        source: radioVal('source'),
-        source_other: form.source_other.value.trim(),
-        time: radioVal('time')
-      };
-
-      // הודעה – עם ירידות שורה אמיתיות
-      payload.text = [
-        'היי 💜',
-        'כדי שאוכל להתאים לך את החוויה הכי טובה באימון, תוכל/י למלא כמה פרטים קצרים?',
-        '',
-        '👇',
-        `👤 שם: ${payload.name}`,
-        `🎂 גיל: ${payload.age}`,
-        `📍 מאיפה את/ה: ${payload.location}`,
-        '',
-        '🏋️‍♀️ ניסיון קודם באימונים:',
-        `${payload.experience || '—'}`,
-        '',
-        '💬 כמה מילים עליך:',
-        '(עבודה, סגנון חיים, הריון, פציעות אם יש)',
-        `✏️ תשובה חופשית: ${payload.about || '—'}`,
-        '',
-        '✨ איך הגעת אלינו?',
-        `${payload.source || (payload.source_other ? '5️⃣ אחר' : '—')}${payload.source_other ? ' — ' + payload.source_other : ''}`,
-        '',
-        '🔥 מתי נוח לך להגיע לאימונים?',
-        `${payload.time || '—'}`
-      ].join('\n');
-
-      try{
-        const res = await fetch('/api/send-telegram', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(payload)
-        });
-        if(!res.ok) throw new Error('send failed');
-        okMsg.classList.add('show');
-        form.reset();
-        document.querySelectorAll('.chip.checked').forEach(c=>c.classList.remove('checked'));
-      }catch(err){
-        console.error('Send error:', err);
-        errMsg.classList.add('show');
-      }
-    });
-  </script>
+    <footer class="footer"><span>XSAP STUDIO</span><span class="footer-divider" aria-hidden="true">·</span><span>FITNESS OF NEW GENERATION</span></footer>
+  </main>
 </body>
 </html>
