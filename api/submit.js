@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
   }
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
+  const shakedChatId = process.env.TELEGRAM_CHAT_ID_SHAKED;
   if (!token || !chatId) return res.status(503).json({error:'not_configured'});
   const text = [
     '❤️ <b>ליד חדש · XSAP Studio</b>',
@@ -53,21 +54,33 @@ module.exports = async function handler(req, res) {
     'נשלח מטופס ההיכרות של XSAP'
   ].join('\n');
 
-  try {
-    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({chat_id:chatId, text, parse_mode:'HTML', disable_web_page_preview:true}),
-      signal: AbortSignal.timeout(10000)
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.ok) {
-      console.error('Telegram delivery error', response.status, result?.error_code || 'unknown');
-      return res.status(502).json({error:'delivery_failed'});
+  // Keep the existing recipient; add Shaked only if she has been configured.
+  // Removing duplicates prevents the same account from receiving twice.
+  const chatIds = [...new Set([chatId, shakedChatId].filter(Boolean))];
+  const deliveries = await Promise.all(chatIds.map(async (recipient) => {
+    try {
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({chat_id:recipient, text, parse_mode:'HTML', disable_web_page_preview:true}),
+        signal: AbortSignal.timeout(10000)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        console.error('Telegram delivery error', response.status, result?.error_code || 'unknown');
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error('Telegram request failed', error?.name || 'error');
+      return false;
     }
-    return res.status(200).json({ok:true});
-  } catch (error) {
-    console.error('Telegram request failed', error?.name || 'error');
-    return res.status(502).json({error:'delivery_failed'});
-  }
+  }));
+
+  // The original recipient is the fallback: never lose a lead just because a
+  // secondary recipient cannot receive Telegram DMs yet.
+  if (!deliveries[0]) return res.status(502).json({error:'primary_delivery_failed'});
+  const allDelivered = deliveries.every(Boolean);
+  if (!allDelivered) console.warn('Lead was delivered to primary chat but a second chat failed');
+  return res.status(200).json({ok:true, allDelivered});
 };
